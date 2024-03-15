@@ -2,7 +2,7 @@
   <q-card flat>
     <q-card-section class="row justify-start q-pb-none">
       <div class="text-h6">Value Bet Games</div>
-      <q-btn @click="addGame" class="q-ml-lg" size="sm" outline color="primary" label="Add New Game"/>
+      <q-btn v-if="isAdmin" @click="addGame" class="q-ml-lg" size="sm" outline color="primary" label="Add New Game"/>
     </q-card-section>
     <!--GAMES TABLE-->
     <q-card-section>
@@ -51,6 +51,7 @@
 
             <q-td key="actions" :props="props">
               <q-btn
+                v-if="isUser"
                 outline
                 color="primary"
                 label="Place Bet"
@@ -59,6 +60,7 @@
               />
 
               <q-btn
+                v-if="isAdmin"
                 outline
                 color="warning"
                 label="Edit"
@@ -68,6 +70,7 @@
               />
 
               <q-btn
+                v-if="isAdmin"
                 outline
                 color="red"
                 label="Remove"
@@ -500,7 +503,7 @@ export default {
           open: false,
           loading: false,
           game_id: null,
-          user_id: null,
+          userId: null,
           selection: null,
           amount: null,
           possible_win: 0,
@@ -604,6 +607,10 @@ export default {
         });
     },
     game(props) {
+      if (props.row.result !== null){
+        notifyWarning("Sorry, the game cannot be edited as it has already been played")
+        return
+      }
       this.modals.edit_game.open = true
       this.modals.edit_game.id = props.row.id
       this.modals.edit_game.home_team = props.row.home_team
@@ -625,6 +632,10 @@ export default {
 
     },
     bet(props) {
+      if (props.row.result !== null){
+        notifyWarning("Sorry, a bet cannot be placed on this game as it has already been played")
+        return
+      }
       this.modals.place_bet.open = true
       this.modals.place_bet.game_id = props.row.id
       this.modals.place_bet.user_id = this.user_id
@@ -691,6 +702,8 @@ export default {
           notifyWarning(error.message);
         })
         .finally(() => {
+          this.modals.place_bet.amount = null;
+          this.modals.place_bet.selection = null;
           this.modals.place_bet.loading = false;
           this.modals.place_bet.open = false;
         });

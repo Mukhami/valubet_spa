@@ -261,41 +261,22 @@
       },
       forgotPassword() {
         this.modals.forgot_password.loading = true
-        this.$axios.post('user/login/password/forgot', {
-          email: this.modals.forgot_password.email
-        })
-          .then(resp => {
-            this.modals.forgot_password.open = false
-            this.modals.reset_password.open = true
-            notifySuccess(resp.data.message)
-          })
-          .catch(error => {
-            notifyWarning(error.data.message)
-          })
-          .finally(() => {
-            this.modals.forgot_password.loading = false
-          })
+
+        notifyWarning("This feature is not yet implemented")
+
+        this.modals.forgot_password.loading = false
+
+        this.modals.forgot_password.open = false
+
+        this.modals.reset_password.open = true
       },
       resetPassword() {
         this.modals.reset_password.loading = true
-        this.$axios.post('user/login/password/update', {
-          email: this.modals.forgot_password.email,
-          token: this.modals.reset_password.token,
-          password: this.modals.reset_password.new_password,
-          password_confirm: this.modals.reset_password.new_password_confirm
-        })
-          .then(resp => {
-            if (resp.data.message) {
-              notifySuccess(resp.data.message)
-              this.modals.reset_password.open = false
-            }
-          })
-          .catch(error => {
-            notifyWarning(error.data.message)
-          })
-          .finally(() => {
-            this.modals.reset_password.loading = false
-          })
+
+
+        notifyWarning("This feature is not yet implemented")
+
+        this.modals.reset_password.open = false
       },
     }
   }

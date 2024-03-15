@@ -31,27 +31,15 @@ const routes = [
         meta: {requiresAuth: true}
       },
       {
+        path: 'bets',
+        name: 'dashboard.bets',
+        component: () => import('pages/dashboard/bets/Bets.vue'),
+        meta: {requiresAuth: true}
+      },
+      {
         path: 'my-bets',
         name: 'dashboard.my-bets',
         component: () => import('pages/dashboard/users/UserBets.vue'),
-        meta: {requiresAuth: true}
-      },
-      {
-        path: 'supplier/:id',
-        name: 'dashboard.supplier',
-        component: () => import('pages/dashboard/suppliers/Supplier.vue'),
-        meta: {requiresAuth: true}
-      },
-      {
-        path: 'all-products',
-        name: 'dashboard.all-products',
-        component: () => import('pages/dashboard/products/Products.vue'),
-        meta: {requiresAuth: true}
-      }
-      ,{
-        path: 'orders',
-        name: 'dashboard.orders',
-        component: () => import('pages/dashboard/orders/Orders.vue'),
         meta: {requiresAuth: true}
       },
     ]

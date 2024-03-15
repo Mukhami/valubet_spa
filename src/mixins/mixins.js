@@ -10,6 +10,7 @@ export const defaultMixin = {
       baseURL: 'http://localhost:4000/api'
     }
   },
+
   methods: {
     ...mapActions('auth', ['restoreState']),
 
@@ -28,7 +29,13 @@ export const defaultMixin = {
     ...mapGetters('auth', ['fName']),
     appName () {
       return process.env.APP_NAME
-    }
+    },
+    isUser() {
+      return this.roles && this.roles.includes('user')
+    },
+    isAdmin() {
+      return this.roles && this.roles.includes('admin')
+    },
   },
 
   created () {

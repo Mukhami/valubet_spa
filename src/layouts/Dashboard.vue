@@ -24,7 +24,8 @@
         </a>
 
         <q-space/>
-        <span class="text-body1 text-white q-mr-sm">User dashboard</span>
+        <span v-if="isUser" class="text-body1 text-white q-mr-sm">User dashboard</span>
+        <span v-if="isAdmin" class="text-body1 text-white q-mr-sm">Admin dashboard</span>
         <div class="q-gutter-sm row items-center no-wrap">
           <q-btn-dropdown
             icon="account_circle"
@@ -102,6 +103,7 @@
           </q-item>
 
           <q-item
+            v-if="isAdmin"
             clickable
             :to="{ name: 'dashboard.users'}"
             v-ripple
@@ -118,11 +120,27 @@
           </q-item>
 
           <q-item
+            v-if="isAdmin"
             clickable
-            :to="{ name: 'dashboard.my-bets'}"
+            :to="{ name: 'dashboard.bets'}"
             v-ripple
             :active="link === 'bets'"
             @click="link = 'bets'"
+            active-class="my-menu-link"
+            exact
+          >
+            <q-item-section avatar>
+              <q-icon name="toc" color="accent"/>
+            </q-item-section>
+            <q-item-section>All Bets</q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+            :to="{ name: 'dashboard.my-bets'}"
+            v-ripple
+            :active="link === 'my-bets'"
+            @click="link = 'my-bets'"
             active-class="my-menu-link"
             exact
           >

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <games></games>
+    <games v-if="this.isUser || this.isAdmin"></games>
     <q-separator/>
-    <users></users>
+    <users v-if="this.isAdmin"></users>
     <q-separator/>
   </div>
 </template>
@@ -19,5 +19,8 @@
       'users': Users
     },
     mixins: [defaultMixin],
+    mounted() {
+      console.log(this.isAdmin)
+    }
   }
 </script>

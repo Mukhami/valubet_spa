@@ -1,18 +1,18 @@
 <template>
   <q-card flat>
     <q-card-section class="row justify-start q-pb-none">
-      <div class="text-h6">ValueBet User Bets</div>
+      <div class="text-h6">ValueBet All User Bets</div>
     </q-card-section>
 
-<!--    USER DETAILS   -->
+    <!--    SNAPSHOT DETAILS   -->
     <q-card-section class="mt-6">
-      <div class="text-h6">User Details</div>
+      <div class="text-h6">Bets Snapshot</div>
       <q-table
-        :data="userTable.data"
-        :columns="userTable.columns"
+        :data="snapShotTable.data"
+        :columns="snapShotTable.columns"
         row-key="name"
         separator="cell"
-        :loading="userTable.loading"
+        :loading="snapShotTable.loading"
         flat
         hide-bottom
       >
@@ -24,23 +24,25 @@
 
         <template v-slot:body="props">
           <q-tr :props="props">
-            <q-td key="first_name" :props="props">
-              {{ props.row.first_name }}
+            <q-td key="total_bets" :props="props">
+              {{ props.row.total_bets }}
             </q-td>
-            <q-td key="last_name" :props="props">
-              {{ props.row.last_name }}
+            <q-td key="won_bets" :props="props">
+              {{ props.row.won_bets }}
             </q-td>
-            <q-td key="email" :props="props">
-              {{ props.row.email }}
+            <q-td key="lost_bets" :props="props">
+              {{ props.row.lost_bets }}
             </q-td>
-            <q-td key="msisdn" :props="props">
-              {{ props.row.msisdn }}
+            <q-td key="cancelled_bets" :props="props">
+              {{ props.row.cancelled_bets }}
+            </q-td>
+            <q-td key="active_bets" :props="props">
+              {{ props.row.active_bets }}
             </q-td>
           </q-tr>
         </template>
       </q-table>
     </q-card-section>
-
 
     <!--GAME BETS TABLE-->
     <q-card-section>
@@ -62,6 +64,15 @@
           <q-tr :props="props">
             <q-td key="id" :props="props">
               {{ props.row.id }}
+            </q-td>
+            <q-td key="full_name" :props="props">
+              {{ props.row.full_name }} <br>
+            </q-td>
+            <q-td key="email" :props="props">
+              {{ props.row.email }} <br>
+            </q-td>
+            <q-td key="msisdn" :props="props">
+              {{ props.row.msisdn }} <br>
             </q-td>
             <q-td key="home_team" :props="props">
               {{ props.row.home_team }} <br>
@@ -91,8 +102,8 @@
             <q-td key="status" :props="props">
               {{ (props.row.status === true) ? 'Active' : 'Cancelled' }}
             </q-td>
-            <q-td key="result_status" :props="props">
-              {{ props.row.result_status }}
+            <q-td key="won" :props="props">
+              {{ (props.row.won === true) ? 'Won' : '--' }}
             </q-td>
             <q-td key="scheduled_at" :props="props">
               {{ props.row.scheduled_at }}
@@ -115,6 +126,7 @@
         </template>
       </q-table>
     </q-card-section>
+
     <!--MODALS-->
     <!--  REMOVE BET -->
     <q-dialog v-model="modals.cancel_bet.open">
@@ -173,13 +185,16 @@ export default {
       table: {
         columns: [
           {name: 'id', align: 'left', label: '#', field: 'id', sortable: true},
+          {name: 'full_name', align: 'left', label: 'Full Name', field: 'full_name', sortable: true},
+          {name: 'email', align: 'left', label: 'Email', field: 'email', sortable: true},
+          {name: 'msisdn', align: 'left', label: 'Phone Number', field: 'msisdn', sortable: true},
           {name: 'home_team', align: 'left', label: 'Home Team', field: 'home_team', sortable: false},
           {name: 'away_team', align: 'left', label: 'Away Team', field: 'away_team', sortable: false},
           {name: 'amount', align: 'left', label: 'Bet Amount (KES)', field: 'amount', sortable: true},
           {name: 'selection', align: 'left', label: 'Selection', field: 'selection', sortable: true},
           {name: 'result', align: 'left', label: 'Game Result', field: 'result', sortable: true},
           {name: 'status', align: 'left', label: 'Bet Status', field: 'status', sortable: true},
-          {name: 'result_status', align: 'left', label: 'Bet Result', field: 'result_status', sortable: true},
+          {name: 'won', align: 'left', label: 'Bet Won', field: 'won', sortable: true},
           {name: 'scheduled_at', align: 'left', label: 'Scheduled At', field: 'scheduled_at', sortable: true},
           {name: 'inserted_at', align: 'left', label: 'Date Created', field: 'inserted_at', sortable: true},
           {name: 'actions', align: 'left', label: '', field: 'actions', sortable: false},
@@ -188,12 +203,12 @@ export default {
         toggle: false,
         loading: false
       },
-      userTable: {
+      snapShotTable: {
         columns: [
-          {name: 'first_name', align: 'left', label: 'First Name', field: 'first_name', sortable: false},
-          {name: 'last_name', align: 'left', label: 'Last Name', field: 'last_name', sortable: false},
-          {name: 'email', align: 'left', label: 'Email', field: 'email', sortable: true},
-          {name: 'msisdn', align: 'left', label: 'Phone Number', field: 'msisdn', sortable: true},
+          {name: 'total_bets', align: 'left', label: 'Total Bets Placed', field: 'total_bets', sortable: false},
+          {name: 'won_bets', align: 'left', label: 'Bets Won', field: 'won_bets', sortable: false},
+          {name: 'lost_bets', align: 'left', label: 'Bets Lost', field: 'lost_bets', sortable: false},
+          {name: 'cancelled_bets', align: 'left', label: 'Bets Cancelled', field: 'cancelled_bets', sortable: false},
         ],
         data: [],
         toggle: false,
@@ -253,43 +268,9 @@ export default {
         });
 
     },
-    getUser(userId) {
-      this.table.loading = true
-      fetch(`${this.baseURL}/users/${userId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.accessToken
-        },
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          this.user = data.data
-
-          this.userTable.data = [{
-            id : data.data.id,
-            first_name : data.data.first_name,
-            last_name : data.data.last_name,
-            email : data.data.email,
-            msisdn : data.data.msisdn
-          }]
-
-          this.getUserBets()
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        })
-        .finally(() => {
-          this.table.loading = false;
-        });
-    },
     getUserBets() {
       this.table.loading = true
-      fetch(`${this.baseURL}/bets/fetch-by-user/${this.user.id}`, {
+      fetch(`${this.baseURL}/bets`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + this.accessToken
@@ -304,17 +285,20 @@ export default {
         .then(data => {
           this.table.data = data.data.map(bet => ({
             id : bet.id,
-            home_team : bet.game.home_team,
-            home_odds : bet.game.home_odds,
-            away_team : bet.game.away_team,
-            away_odds : bet.game.away_odds,
-            draw_odds : bet.game.draw_odds,
-            result : bet.game.result,
-            scheduled_at : bet.game.scheduled_at,
+            full_name : bet.user?.first_name + ' ' + bet.user?.last_name,
+            email : bet.user?.email,
+            msisdn : bet.user?.msisdn,
+            home_team : bet.game?.home_team,
+            home_odds : bet.game?.home_odds,
+            away_team : bet.game?.away_team,
+            away_odds : bet.game?.away_odds,
+            draw_odds : bet.game?.draw_odds,
+            result : bet.game?.result,
+            scheduled_at : bet.game?.scheduled_at,
             amount : bet.amount,
             selection : bet.selection,
             status : bet.status,
-            result_status : bet.result_status,
+            won : bet.won,
             inserted_at : bet.inserted_at
           }));
         })
@@ -325,13 +309,39 @@ export default {
           this.table.loading = false;
         });
     },
+    getSnapShot() {
+      this.snapShotTable.loading = true
+      fetch(`${this.baseURL}/bets/stats/snapshot`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.accessToken
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          this.snapShotTable.data = [{
+            total_bets : data.data.total_bets,
+            won_bets : data.data.won_bets,
+            lost_bets : data.data.lost_bets,
+            cancelled_bets : data.data.cancelled_bets
+          }]
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        })
+        .finally(() => {
+          this.snapShotTable.loading = false;
+        });
+    },
   },
   mounted() {
-    if (this.$route.params.id){
-      this.getUser(this.$route.params.id)
-    } else {
-      this.getUser(this.user_id)
-    }
+    this.getUserBets();
+    this.getSnapShot();
   }
 }
 </script>
